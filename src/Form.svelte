@@ -15,6 +15,10 @@
     if (mode === 'add') {
       materialStore.add(name, price)
     }
+
+    if (mode === 'edit') {
+      materialStore.edit(id, name, price)
+    }
     price = "";
     name = "";
     id = undefined;

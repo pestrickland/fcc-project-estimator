@@ -1,18 +1,22 @@
 <script>
-import { prevent_default } from "svelte/internal";
-
+  import { createEventDispatcher } from "svelte";
   import materialStore from "./material-store.js";
 
   let materials = [];
+  const dispatch = createEventDispatcher();
 
   materialStore.subscribe((items) => {
     materials = items;
   });
 
   $: total = materials.reduce((prev, next) => {
-    prev += next.price
-    return prev
-  }, 0)
+    prev += next.price;
+    return prev;
+  }, 0);
+
+  function edit(id, name, price) {
+    dispatch("edit", { id, name, price })
+  }
 
   const formatter = new Intl.NumberFormat("en-gb", {
     style: "currency",
@@ -24,9 +28,11 @@ import { prevent_default } from "svelte/internal";
   table {
     width: 100%;
   }
+  tr {
+    cursor: pointer;
+  }
 </style>
 
-<h1>{total}</h1>
 <table class="primary">
   <thead>
     <tr>
@@ -37,7 +43,7 @@ import { prevent_default } from "svelte/internal";
   </thead>
   <tbody>
     {#each materials as material (material.id)}
-      <tr>
+      <tr on:click={edit(material.id, material.name, material.price)}>
         <td>{material.name}</td>
         <td>{formatter.format(material.price)}</td>
         <td><i class="far fa-trash-alt" /></td>
