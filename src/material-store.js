@@ -18,7 +18,6 @@ const add = (name, price) => {
 }
 
 materialStore.subscribe((items) => {
-  console.log(items)
   const jsonString = JSON.stringify(items)
   localStorage.setItem(key, jsonString)
 })
