@@ -15,13 +15,17 @@
   }, 0);
 
   function edit(id, name, price) {
-    dispatch("edit", { id, name, price })
+    dispatch("edit", { id, name, price });
   }
 
   const formatter = new Intl.NumberFormat("en-gb", {
     style: "currency",
     currency: "GBP",
   });
+
+  function remove(id) {
+    materialStore.remove(id)
+  }
 </script>
 
 <style>
@@ -30,6 +34,9 @@
   }
   tr {
     cursor: pointer;
+  }
+  tr:last-of-type {
+    cursor: inherit;
   }
 </style>
 
@@ -46,7 +53,7 @@
       <tr on:click={edit(material.id, material.name, material.price)}>
         <td>{material.name}</td>
         <td>{formatter.format(material.price)}</td>
-        <td><i class="far fa-trash-alt" /></td>
+        <td><i on:click|stopPropagation={remove(material.id)} class="far fa-trash-alt" /></td>
       </tr>
     {/each}
     <tr>
